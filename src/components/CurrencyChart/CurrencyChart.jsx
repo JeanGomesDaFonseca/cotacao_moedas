@@ -2,15 +2,34 @@
 // src/components/CurrencyChart.js
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import ApexCharts from 'react-apexcharts';
+import ReactApexChart from 'react-apexcharts';
 
 const CurrencyChart = ({ selectedCurrency }) => {
     const [chartOptions] = useState({
         chart: {
-            type: 'candlestick',
+            type: 'line',
+            zoom: {
+                enabled: false,
+            },
         },
         xaxis: {
             type: 'datetime',
+        },
+        annotations: {
+            yaxis: [
+                {
+                    y: 30, // Customize the y-coordinate for your annotation
+                    borderColor: '#ff0000',
+                    label: {
+                        borderColor: '#ff0000',
+                        style: {
+                            color: '#fff',
+                            background: '#ff0000',
+                        },
+                        text: 'Annotation Text',
+                    },
+                },
+            ],
         },
     });
     const [chartSeries, setChartSeries] = useState([]);
@@ -44,7 +63,9 @@ const CurrencyChart = ({ selectedCurrency }) => {
 
     return (
         <div>
-            <ApexCharts options={chartOptions} series={chartSeries} type="candlestick" height={400} />
+            {/* <ApexCharts options={chartOptions} series={chartSeries} type="candlestick" height={400} width={600} /> */}
+            <ReactApexChart options={chartOptions} series={chartSeries} type="line" height={400} width={600} />
+
         </div>
     );
 };

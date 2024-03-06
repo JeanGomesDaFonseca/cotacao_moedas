@@ -1,30 +1,44 @@
 /* eslint-disable no-unused-vars */
-// src/App.js
 import { useState } from 'react';
-import CurrencyChart from './components/CurrencyChart';
+import CurrencyChart from './components/CurrencyChart/CurrencyChart';
+import Sidebar from './components/Sidebar';
+import InputsCotacao from './components/InputsCotacao';
+import { Container, ContentContainer, CurrencyChartContainer } from '../style/Global';
 
 const App = () => {
   const [selectedCurrency, setSelectedCurrency] = useState('USD');
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+
+  const startDate = null
+  const endDate = null
 
   const handleCurrencyChange = (e) => {
     setSelectedCurrency(e.target.value);
   };
 
   return (
-    <div>
-      <label>
-        Selecione a moeda:
-        <select value={selectedCurrency} onChange={handleCurrencyChange}>
-          <option value="USD">Dólar</option>
-          <option value="EUR">Euro</option>
-          <option value="BTC">Bitcoin</option>
-        </select>
-      </label>
+    // <>
+    //     <Sidebar />
+    //   <div style={{ display: 'flex', flexDirection: 'column' }}>
+    //     <div>
+    //       <InputsCotacao />
+    //     </div>
+    //     <div style={{ display: 'flex' }}>
+    //       <CurrencyChart selectedCurrency={selectedCurrency} startDate={startDate} endDate={endDate} />
+    //     </div>
+    //   </div>
 
-      <CurrencyChart selectedCurrency={selectedCurrency} startDate={startDate} endDate={endDate} />
-    </div>
+    // </>
+
+
+    <Container>
+      <Sidebar />
+      <ContentContainer>
+      <InputsCotacao />
+        <CurrencyChartContainer>
+          <CurrencyChart />
+        </CurrencyChartContainer>
+      </ContentContainer>
+    </Container>
   );
 };
 
