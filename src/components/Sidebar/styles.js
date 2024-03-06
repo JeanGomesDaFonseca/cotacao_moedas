@@ -7,6 +7,7 @@ export const SidebarContainer = styled.div`
   background-color: #BFBFBF;
   color: #313131;
   padding: 20px;
+
 `;
 
 export const LogoContainer = styled.div`

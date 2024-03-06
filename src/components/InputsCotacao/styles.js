@@ -6,6 +6,7 @@ export const Container = styled.div`
   display: flex;
   gap: 24px;
   margin: 0 auto;
+  margin-top: 3rem;
 `;
 
 export const InputLabel = styled.label`

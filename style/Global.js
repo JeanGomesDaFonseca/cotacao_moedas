@@ -1,17 +1,25 @@
 import styled from 'styled-components';
 
- export const Container = styled.div`
+export const Container = styled.div`
   display: flex;
+  width: 80%;
+  height: auto;
+  margin: 0 auto;
+
 `;
 
- export const ContentContainer = styled.div`
+export const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 16px; /* Adicione o espaçamento desejado entre a sidebar e o conteúdo */
+  border: 0px 2px 2px 0px solid #ddd; 
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  gap: 2rem;
 `;
 
- export const CurrencyChartContainer = styled.div`
+export const CurrencyChartContainer = styled.div`
   display: flex;
+  margin: 0 auto;
 `;
 
 

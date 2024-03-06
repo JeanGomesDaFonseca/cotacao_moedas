@@ -35,7 +35,7 @@ const App = () => {
       <ContentContainer>
       <InputsCotacao />
         <CurrencyChartContainer>
-          <CurrencyChart />
+        <CurrencyChart selectedCurrency={selectedCurrency} startDate={startDate} endDate={endDate} />
         </CurrencyChartContainer>
       </ContentContainer>
     </Container>
