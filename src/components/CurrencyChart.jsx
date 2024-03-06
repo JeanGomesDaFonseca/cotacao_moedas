@@ -1,5 +1,6 @@
+/* eslint-disable react/prop-types */
 // src/components/CurrencyChart.js
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import ApexCharts from 'react-apexcharts';
 
@@ -17,7 +18,7 @@ const CurrencyChart = ({ selectedCurrency }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`https://economia.awesomeapi.com.br/json/last/USDBRL`);
+                const response = await axios.get(`https://economia.awesomeapi.com.br/json/last/${selectedCurrency}`);
                 const candlestickData = formatDataForCandlestick(response.data.USDBRL);
                 setChartSeries([{ data: candlestickData }]);
             } catch (error) {
