@@ -3,7 +3,14 @@ import { Container, CurrencyInput, Icon, Input, InputLabel } from './styles';
 import { faDollarSign, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 
 
-const InputsCotacao = ({ startDate, setStartDate, endDate, setEndDate, selectedCurrency, setSelectedCurrency }) => {
+const InputsCotacao = ({
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+    selectedCurrency,
+    setSelectedCurrency,
+}) => {
 
 
     const handleCurrencyChange = (e) => {
@@ -17,6 +24,8 @@ const InputsCotacao = ({ startDate, setStartDate, endDate, setEndDate, selectedC
     const handleEndDateChange = (e) => {
         setEndDate(e.target.value);
     };
+
+
 
     return (
         <Container>
@@ -37,6 +46,7 @@ const InputsCotacao = ({ startDate, setStartDate, endDate, setEndDate, selectedC
                 <Icon icon={faCalendarAlt} />
                 <Input type="date" placeholder="Data Final" value={endDate} onChange={handleEndDateChange} />
             </InputLabel>
+
         </Container>
     );
 
@@ -44,3 +54,7 @@ const InputsCotacao = ({ startDate, setStartDate, endDate, setEndDate, selectedC
 
 
 export default InputsCotacao;
+
+
+
+

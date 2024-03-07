@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+
 import ReactApexChart from 'react-apexcharts';
 
 const CurrencyChart = () => {
@@ -10,6 +11,7 @@ const CurrencyChart = () => {
     const [data, setData] = useState([]);
     const [coin, setCoin] = useState('BTC');
     const [dateRange, setDateRange] = useState({ start: '20180901', end: '20180930' });
+    const [forceUpdate, setForceUpdate] = useState(false);
     let interval;
 
     async function GetCotacoes() {
@@ -17,6 +19,8 @@ const CurrencyChart = () => {
             const response = await axios.get(`https://economia.awesomeapi.com.br/last/${coin}-BRL`);
             const { low, high } = response.data[`${coin}BRL`];
             setData(oldData => [...oldData, { x: new Date(), y: [low, high, low, high] }]);
+
+            setForceUpdate(prevState => !prevState)
         } catch (error) {
             console.error('Erro ao obter cotações:', error);
         }
@@ -28,6 +32,8 @@ const CurrencyChart = () => {
             const data = response.data;
 
             setData(data.map(item => ({ x: new Date(item.timestamp * 1000), y: [item.low, item.high, item.low, item.high] })));
+
+            setForceUpdate(prevState => !prevState);
         } catch (error) {
             console.error('Erro ao obter cotações diárias:', error);
         }
@@ -39,16 +45,31 @@ const CurrencyChart = () => {
         return () => clearInterval(interval);
     }, [coin]);
 
-
     const chartOptions = {
         chart: {
             type: 'line',
             zoom: {
-                enabled: true,
+                enabled: false,
             },
         },
         xaxis: {
             type: 'datetime',
+        },
+        annotations: {
+            yaxis: [
+                {
+                    y: 30,
+                    borderColor: '#ff0000',
+                    label: {
+                        borderColor: '#ff0000',
+                        style: {
+                            color: '#fff',
+                            background: '#ff0000',
+                        },
+                        text: 'Annotation Text',
+                    },
+                },
+            ],
         },
     }
 
@@ -69,7 +90,7 @@ const CurrencyChart = () => {
                 clearInterval(interval);
                 GetCotacoesDaily();
             }}>Get Daily Quotes</button>
-            <ReactApexChart options={chartOptions} series={data} type="line" height={400} width={600} />
+            <ReactApexChart key={forceUpdate} options={chartOptions} series={[{ data }]} type="line" height={400} width={600} />
         </>
     );
 };
