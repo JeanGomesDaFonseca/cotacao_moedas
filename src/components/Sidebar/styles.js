@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export const SidebarContainer = styled.div`
   width: 250px;
   height: 900px;
-  background-color: #BFBFBF;
+  background-color: rgba(191, 191, 191, 0.5);
   color: #313131;
   padding: 20px;
 

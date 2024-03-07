@@ -1,72 +1,76 @@
-/* eslint-disable react/prop-types */
-// src/components/CurrencyChart.js
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
+
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import ReactApexChart from 'react-apexcharts';
 
-const CurrencyChart = ({ selectedCurrency }) => {
-    const [chartOptions] = useState({
+const CurrencyChart = () => {
+
+    const [data, setData] = useState([]);
+    const [coin, setCoin] = useState('BTC');
+    const [dateRange, setDateRange] = useState({ start: '20180901', end: '20180930' });
+    let interval;
+
+    async function GetCotacoes() {
+        try {
+            const response = await axios.get(`https://economia.awesomeapi.com.br/last/${coin}-BRL`);
+            const { low, high } = response.data[`${coin}BRL`];
+            setData(oldData => [...oldData, { x: new Date(), y: [low, high, low, high] }]);
+        } catch (error) {
+            console.error('Erro ao obter cotações:', error);
+        }
+    }
+
+    async function GetCotacoesDaily() {
+        try {
+            const response = await axios.get(`https://economia.awesomeapi.com.br/json/daily/USD-BRL/?start_date=${dateRange.start}&end_date=${dateRange.end}`);
+            const data = response.data;
+
+            setData(data.map(item => ({ x: new Date(item.timestamp * 1000), y: [item.low, item.high, item.low, item.high] })));
+        } catch (error) {
+            console.error('Erro ao obter cotações diárias:', error);
+        }
+    }
+
+    useEffect(() => {
+        GetCotacoes();
+        interval = setInterval(() => { GetCotacoes(); }, 5000);
+        return () => clearInterval(interval);
+    }, [coin]);
+
+
+    const chartOptions = {
         chart: {
             type: 'line',
             zoom: {
-                enabled: false,
+                enabled: true,
             },
         },
         xaxis: {
             type: 'datetime',
         },
-        annotations: {
-            yaxis: [
-                {
-                    y: 30, // Customize the y-coordinate for your annotation
-                    borderColor: '#ff0000',
-                    label: {
-                        borderColor: '#ff0000',
-                        style: {
-                            color: '#fff',
-                            background: '#ff0000',
-                        },
-                        text: 'Annotation Text',
-                    },
-                },
-            ],
-        },
-    });
-    const [chartSeries, setChartSeries] = useState([]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`https://economia.awesomeapi.com.br/json/last/${selectedCurrency}`);
-                const candlestickData = formatDataForCandlestick(response.data.USDBRL);
-                setChartSeries([{ data: candlestickData }]);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchData();
-
-        // Atualizar os dados a cada 30 segundos
-        const intervalId = setInterval(fetchData, 30000);
-
-        // Limpar o intervalo ao desmontar o componente
-        return () => clearInterval(intervalId);
-    }, [selectedCurrency]);
-
-    const formatDataForCandlestick = (data) => {
-        return [{
-            x: new Date(data.timestamp * 1000),
-            y: [parseFloat(data.bid), parseFloat(data.ask), parseFloat(data.low), parseFloat(data.high)],
-        }];
-    };
+    }
 
     return (
-        <div>
-            {/* <ApexCharts options={chartOptions} series={chartSeries} type="candlestick" height={400} width={600} /> */}
-            <ReactApexChart options={chartOptions} series={chartSeries} type="line" height={400} width={600} />
+        <>
+            <h1>Cotacoes</h1>
 
-        </div>
+            <select onChange={(e) => {
+                setCoin(e.target.value)
+                setData([])
+            }}>
+                <option value="BTC">Bitcoin</option>
+                <option value="USD">Dolar</option>
+                <option value="EUR">Euro</option>
+            </select>
+
+            <button onClick={() => {
+                clearInterval(interval);
+                GetCotacoesDaily();
+            }}>Get Daily Quotes</button>
+            <ReactApexChart options={chartOptions} series={data} type="line" height={400} width={600} />
+        </>
     );
 };
 

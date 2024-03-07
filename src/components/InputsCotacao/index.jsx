@@ -1,12 +1,10 @@
-import { useState } from 'react';
+/* eslint-disable react/prop-types */
 import { Container, CurrencyInput, Icon, Input, InputLabel } from './styles';
 import { faDollarSign, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 
 
-const InputsCotacao = () => {
-    const [selectedCurrency, setSelectedCurrency] = useState('');
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
+const InputsCotacao = ({ startDate, setStartDate, endDate, setEndDate, selectedCurrency, setSelectedCurrency }) => {
+
 
     const handleCurrencyChange = (e) => {
         setSelectedCurrency(e.target.value);

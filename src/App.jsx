@@ -8,34 +8,17 @@ import { Container, ContentContainer, CurrencyChartContainer } from '../style/Gl
 const App = () => {
   const [selectedCurrency, setSelectedCurrency] = useState('USD');
 
-  const startDate = null
-  const endDate = null
-
-  const handleCurrencyChange = (e) => {
-    setSelectedCurrency(e.target.value);
-  };
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   return (
-    // <>
-    //     <Sidebar />
-    //   <div style={{ display: 'flex', flexDirection: 'column' }}>
-    //     <div>
-    //       <InputsCotacao />
-    //     </div>
-    //     <div style={{ display: 'flex' }}>
-    //       <CurrencyChart selectedCurrency={selectedCurrency} startDate={startDate} endDate={endDate} />
-    //     </div>
-    //   </div>
-
-    // </>
-
 
     <Container>
       <Sidebar />
       <ContentContainer>
-      <InputsCotacao />
+        <InputsCotacao startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} selectedCurrency={selectedCurrency} setSelectedCurrency={setSelectedCurrency} />
         <CurrencyChartContainer>
-        <CurrencyChart selectedCurrency={selectedCurrency} startDate={startDate} endDate={endDate} />
+          <CurrencyChart selectedCurrency={selectedCurrency} startDate={startDate} endDate={endDate} />
         </CurrencyChartContainer>
       </ContentContainer>
     </Container>
